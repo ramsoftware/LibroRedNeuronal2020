@@ -1,10 +1,10 @@
-/* Autor: Rafael Alberto Moreno Parra */
+﻿/* Autor: Rafael Alberto Moreno Parra */
 using System;
 using System.Collections.Generic;
 
 namespace AplicacionConsola {
 	class Program {
-		static void Main(string[] args) {
+		static void Main() {
 			//Lee los datos de un archivo plano
 			int MaximosRegistros = 2000;
 			double[] entrada = new double[MaximosRegistros + 1];
@@ -42,10 +42,10 @@ namespace AplicacionConsola {
 			salidaEsperada.Add(0);
 
 			//Ciclo que entrena la red neuronal
-			int totalCiclos = 8000; //Ciclos de entrenamiento
+			int totalCiclos = 10000; //Ciclos de entrenamiento
 			for (int ciclo = 1; ciclo <= totalCiclos; ciclo++) {
-				//Por cada ciclo, se entrena el perceptrón con todos los valores
 
+				//Por cada ciclo, se entrena el perceptrón con todos los valores
 				for (int conjunto = 0; conjunto < ConjuntoEntradas; conjunto++) {
 					//Entradas y salidas esperadas
 					entradas[0] = entrada[conjunto];
@@ -59,6 +59,7 @@ namespace AplicacionConsola {
 				}
 			}
 
+			Console.WriteLine("Entrada normalizada | Salida esperada normalizada | Salida perceptrón normalizada");
 			for (int conjunto = 0; conjunto < ConjuntoEntradas; conjunto++) {
 				//Entradas y salidas esperadas
 				entradas[0] = entrada[conjunto];
@@ -74,20 +75,19 @@ namespace AplicacionConsola {
 			Console.WriteLine("Finaliza");
 			Console.ReadKey();
 		}
-		
+
+		//Lee los datos del archivo plano
 		private static int LeeDatosArchivo(string urlArchivo, double[] entrada, double[] salida) {
 			var archivo = new System.IO.StreamReader(urlArchivo);
-			archivo.ReadLine(); //La línea de simple serie
-			archivo.ReadLine(); //La línea de título de cada columna de datos
 			string leelinea;
 
 			int limValores = 0;
 			while ((leelinea = archivo.ReadLine()) != null) {
-				limValores++;
 				double valX = TraerNumeroCadena(leelinea, ';', 1);
 				double valY = TraerNumeroCadena(leelinea, ';', 2);
 				entrada[limValores] = valX;
 				salida[limValores] = valY;
+				limValores++;
 			}
 			archivo.Close();
 			return limValores;
@@ -130,7 +130,7 @@ namespace AplicacionConsola {
 			}
 			Console.Write(" | ");
 			for (int cont = 0; cont < capas[2].salidas.Count; cont++) {
-				Console.Write(capas[2].salidas[cont].ToString() + " | ");
+				Console.Write(capas[2].salidas[cont].ToString());
 			}
 			Console.WriteLine(" ");
 		}
@@ -254,7 +254,7 @@ namespace AplicacionConsola {
 				double dE0 = a0k * (1 - a0k) * acumular;
 				capas[0].neuronas[k].nuevoumbral = capas[0].neuronas[k].umbral - alpha * dE0;
 			}
-			
+
 			//Actualiza los pesos
 			capas[0].actualiza();
 			capas[1].actualiza();
@@ -282,9 +282,9 @@ namespace AplicacionConsola {
 				salidas[cont] = neuronas[cont].calculaSalida(entradas);
 			}
 		}
-		
+
 		//Actualiza los pesos y umbrales de las neuronas
-		public void actualiza(){
+		public void actualiza() {
 			for (int cont = 0; cont < neuronas.Count; cont++) {
 				neuronas[cont].actualiza();
 			}
@@ -318,10 +318,10 @@ namespace AplicacionConsola {
 			valor += umbral;
 			return 1 / (1 + Math.Exp(-valor));
 		}
-		
+
 		//Reemplaza viejos pesos por nuevos
-		public void actualiza(){
-			for (int cont = 0; cont < pesos.Count; cont++){
+		public void actualiza() {
+			for (int cont = 0; cont < pesos.Count; cont++) {
 				pesos[cont] = nuevospesos[cont];
 			}
 			umbral = nuevoumbral;
