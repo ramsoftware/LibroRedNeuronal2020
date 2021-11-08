@@ -1,4 +1,4 @@
-/* Autor: Rafael Alberto Moreno Parra */
+﻿/* Autor: Rafael Alberto Moreno Parra */
 using System;
 using System.Collections.Generic;
 
@@ -128,17 +128,15 @@ namespace ConsoleApp1 {
 
         private static int LeeDatosArchivo(string urlArchivo, double[] entrada, double[] salida) {
             var archivo = new System.IO.StreamReader(urlArchivo);
-            archivo.ReadLine(); //La línea de simple serie
-            archivo.ReadLine(); //La línea de título de cada columna de datos
             string leelinea;
 
             int limValores = 0;
             while ((leelinea = archivo.ReadLine()) != null) {
-                limValores++;
                 double valX = TraerNumeroCadena(leelinea, ';', 1);
                 double valY = TraerNumeroCadena(leelinea, ';', 2);
                 entrada[limValores] = valX;
                 salida[limValores] = valY;
+                limValores++;
             }
             archivo.Close();
             return limValores;
